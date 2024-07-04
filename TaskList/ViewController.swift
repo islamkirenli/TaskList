@@ -1,5 +1,10 @@
 import UIKit
-import CoreData
+import Supabase
+
+struct Tasks: Decodable {
+    let id: UUID
+    let title: String
+}
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -14,13 +19,22 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var tasksView: UIView!
     @IBOutlet weak var tasksTableView: UITableView!
     
-    var tasks: [NSManagedObject] = []
     var currentEntityName: String = "TodayTasks" // Varsayılan entity
     
     var floatingButtonManager: FloatingButtonManager?
     
+    var data: [Tasks] = []
+    
+    let supabaseUrl = URL(string: "https://nckdyawxkhjabqsaboub.supabase.co")!
+    let supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ja2R5YXd4a2hqYWJxc2Fib3ViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAwMTg3NjAsImV4cCI6MjAzNTU5NDc2MH0.74vvRucyln9xNV8G8i8c09VpemC_B1wlk67LssXrJ-g"
+    var client: SupabaseClient!
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        client = SupabaseClient(supabaseURL: supabaseUrl, supabaseKey: supabaseKey)
+        
+        taskTimeLabel.text = "Today's Tasks"
         
         tasksTableView.dataSource = self
         tasksTableView.delegate = self
@@ -39,26 +53,48 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture)
         
+        Task{
+            await fetchData()
+        }
+        
     }
     
     @objc func todayViewTapped(){
         taskTimeLabel.text = "Today's Tasks"
         currentEntityName = "TodayTasks"
+        Task{
+            await fetchData()
+        }
     }
     
     @objc func tomorrowViewTapped(){
         taskTimeLabel.text = "Tomorrow's Tasks"
         currentEntityName = "TomorrowTasks"
+        Task{
+            await fetchData()
+        }
     }
     
     @objc func thisWeekViewTapped(){
         taskTimeLabel.text = "This Week's Tasks"
         currentEntityName = "ThisWeekTasks"
+        Task{
+            await fetchData()
+        }
     }
     
     @objc func soonViewTapped(){
         taskTimeLabel.text = "Soon's Tasks"
         currentEntityName = "SoonTasks"
+        Task{
+            await fetchData()
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toNewTaskVC", let destinationVC = segue.destination as? NewTaskViewController {
+            destinationVC.passedDateText = taskTimeLabel.text
+        }
     }
     
     @objc func handleTap() {
@@ -68,28 +104,37 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    func fetchData() async {
+        do {
+            let response = try await client.from("tasks").select().execute()
+            
+            // response.data'yı JSONDecoder ile doğrudan ayrıştırıyoruz
+            let decoder = JSONDecoder()
+            let decodedData = try decoder.decode([Tasks].self, from: response.data)
+            self.data = decodedData
+            
+            DispatchQueue.main.async {
+                self.tasksTableView.reloadData()
+            }
+        } catch {
+            print("Error fetching data: \(error)")
+        }
+    }
+    
+    
     // MARK: - UITableViewDataSource Methods
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tasks.count
+        return data.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        let task = tasks[indexPath.row]
-        let name = task.value(forKeyPath: "taskName") as? String
-        let isChecked = task.value(forKeyPath: "isChecked") as? Bool ?? false
+        let task = data[indexPath.row]
+        let name = task.title
         
         var content = UIListContentConfiguration.cell()
         content.text = name
-        
-        // Boş kare veya tikli kare belirleme
-        if isChecked {
-            content.image = UIImage(systemName: "checkmark.square")
-        } else {
-            content.image = UIImage(systemName: "square")
-        }
-        
         cell.contentConfiguration = content
         
         return cell
@@ -98,10 +143,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // MARK: - UITableViewDelegate Methods
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let task = tasks[indexPath.row]
-        let isChecked = task.value(forKeyPath: "isChecked") as? Bool ?? false
+        let task = data[indexPath.row]
+        //let isChecked = task.value(forKeyPath: "isChecked") as? Bool ?? false
     }
     
     
 }
-

@@ -266,25 +266,36 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U6T-mA-v0E">
-                                <rect key="frame" x="16" y="67" width="361" height="34"/>
+                                <rect key="frame" x="16" y="128" width="361" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tasks Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bGw-1e-ili">
+                                <rect key="frame" x="69" y="59" width="255" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2y1-gX-wou"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="U6T-mA-v0E" firstAttribute="top" secondItem="iuA-Ev-G5U" secondAttribute="bottom" constant="53" id="0lv-wx-ZtE"/>
+                            <constraint firstItem="bGw-1e-ili" firstAttribute="leading" secondItem="2y1-gX-wou" secondAttribute="leading" constant="69" id="0Cc-9z-wlW"/>
+                            <constraint firstItem="bGw-1e-ili" firstAttribute="top" secondItem="iuA-Ev-G5U" secondAttribute="bottom" constant="45" id="9Li-zm-Eli"/>
                             <constraint firstItem="U6T-mA-v0E" firstAttribute="leading" secondItem="2y1-gX-wou" secondAttribute="leading" constant="16" id="9fl-Qy-KXm"/>
+                            <constraint firstItem="bGw-1e-ili" firstAttribute="centerX" secondItem="iuA-Ev-G5U" secondAttribute="centerX" id="D0z-y2-oQd"/>
+                            <constraint firstItem="2y1-gX-wou" firstAttribute="trailing" secondItem="bGw-1e-ili" secondAttribute="trailing" constant="69" id="Rzs-4b-Ztb"/>
                             <constraint firstItem="2y1-gX-wou" firstAttribute="trailing" secondItem="iuA-Ev-G5U" secondAttribute="trailing" constant="16" id="Z5y-cT-kaw"/>
                             <constraint firstItem="iuA-Ev-G5U" firstAttribute="top" secondItem="2y1-gX-wou" secondAttribute="top" id="dSw-uM-Uwf"/>
                             <constraint firstItem="2y1-gX-wou" firstAttribute="trailing" secondItem="U6T-mA-v0E" secondAttribute="trailing" constant="16" id="kE4-Ls-Vqd"/>
                             <constraint firstItem="iuA-Ev-G5U" firstAttribute="leading" secondItem="2y1-gX-wou" secondAttribute="leading" constant="16" id="kdF-9P-JZp"/>
+                            <constraint firstItem="U6T-mA-v0E" firstAttribute="top" secondItem="bGw-1e-ili" secondAttribute="bottom" constant="45" id="sKk-cu-uFW"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="HKI-jZ-64p"/>
                     <connections>
                         <outlet property="backButton" destination="iuA-Ev-G5U" id="3La-WP-IKH"/>
+                        <outlet property="newTaskDateLabel" destination="bGw-1e-ili" id="hsj-VJ-Cbp"/>
                         <outlet property="textField" destination="U6T-mA-v0E" id="xFW-Cx-aSs"/>
                     </connections>
                 </viewController>

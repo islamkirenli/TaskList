@@ -92,8 +92,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toNewTaskVC", let destinationVC = segue.destination as? NewTaskViewController {
-            destinationVC.passedDateText = taskTimeLabel.text
+        if segue.identifier == "toRouterVC", let destinationVC = segue.destination as? RouterViewController {
+            //destinationVC.passedDateText = taskTimeLabel.text
         }
     }
     

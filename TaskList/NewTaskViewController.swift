@@ -4,9 +4,8 @@ import Supabase
 
 class NewTaskViewController: UIViewController {
 
-    @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var textField: UITextField!
     @IBOutlet weak var newTaskDateLabel: UILabel!
+    @IBOutlet weak var textField: UITextField!
     
     var selectedDate: Date? // Seçilen tarihi tutmak için bir değişken
     var alarmButton: UIButton? // Alarm butonunu referans almak için
@@ -30,14 +29,8 @@ class NewTaskViewController: UIViewController {
         
         textField.becomeFirstResponder() // Ekran göründüğünde klavyeyi açar
         
-        setupBackButton()
         setupTextField()
         setupToolbar()
-    }
-    
-    private func setupBackButton() {
-        backButton.setImage(UIImage(systemName: "chevron.down"), for: .normal)
-        backButton.tintColor = .black
     }
     
     private func setupTextField() {
@@ -135,9 +128,5 @@ class NewTaskViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         //textField.becomeFirstResponder() // Ekran göründüğünde klavyeyi açar
-    }
-
-    @IBAction func backButtonTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
     }
 }

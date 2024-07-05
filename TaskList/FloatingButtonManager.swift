@@ -145,7 +145,7 @@ class FloatingButtonManager {
     @objc private func mainButtonTapped() {
         if additionalButtonsVisible {
             // Eğer butonlar görünüyorsa, segue'yi gerçekleştirin
-            viewController?.performSegue(withIdentifier: "toNewTaskVC", sender: nil)
+            viewController?.performSegue(withIdentifier: "toRouterVC", sender: nil)
         } else {
             // Butonları göster
             showAdditionalButtons()

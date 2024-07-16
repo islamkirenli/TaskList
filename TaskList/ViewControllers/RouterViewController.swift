@@ -5,7 +5,7 @@ class RouterViewController: UIViewController {
     @IBOutlet weak var newTaskContainerView: UIView!
     @IBOutlet weak var recurringEventContainerView: UIView!
     @IBOutlet weak var habitContainerView: UIView!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,5 +21,16 @@ class RouterViewController: UIViewController {
         newTaskContainerView.isHidden = selectedIndex != 0
         recurringEventContainerView.isHidden = selectedIndex != 1
         habitContainerView.isHidden = selectedIndex != 2
+                
+        if let newTaskVC = children.first(where: { $0 is NewTaskViewController }) as? NewTaskViewController {
+            newTaskVC.textField.becomeFirstResponder()
+        }
+        
+        if selectedIndex == 1 || selectedIndex == 2 {
+            view.endEditing(true)
+        }
+
     }
 }
+
+

@@ -4,6 +4,10 @@ import Supabase
 struct Tasks: Decodable {
     let id: UUID
     let title: String
+    let subTasks: String?
+    let taskDate: Date?
+    let taskDateString: String?
+    let flagIndex: Int?
 }
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -21,9 +25,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     var currentEntityName: String = "TodayTasks" // Varsayılan entity
     
-    var floatingButtonManager: FloatingButtonManager?
+    var newTaskPlusButtonManager: NewTaskPlusButtonManager?
     
     var data: [Tasks] = []
+    
+    var taskTitle: String?
     
     let supabaseUrl = URL(string: "https://nckdyawxkhjabqsaboub.supabase.co")!
     let supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5ja2R5YXd4a2hqYWJxc2Fib3ViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAwMTg3NjAsImV4cCI6MjAzNTU5NDc2MH0.74vvRucyln9xNV8G8i8c09VpemC_B1wlk67LssXrJ-g"
@@ -48,59 +54,48 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let gestureRecognizerSoon = UITapGestureRecognizer(target: self, action: #selector(soonViewTapped))
         soonView.addGestureRecognizer(gestureRecognizerSoon)
         
-        floatingButtonManager = FloatingButtonManager(parentView: view, viewController: self) // ViewController referansı eklendi
+        newTaskPlusButtonManager = NewTaskPlusButtonManager(parentView: view, viewController: self) // ViewController referansı eklendi
 
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        view.addGestureRecognizer(tapGesture)
-        
-        Task{
+        Task {
             await fetchData()
         }
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        Task {
+            await fetchData()
+        }
     }
     
     @objc func todayViewTapped(){
         taskTimeLabel.text = "Today's Tasks"
-        currentEntityName = "TodayTasks"
-        Task{
+        currentEntityName = "today_tasks"
+        Task {
             await fetchData()
         }
     }
     
     @objc func tomorrowViewTapped(){
         taskTimeLabel.text = "Tomorrow's Tasks"
-        currentEntityName = "TomorrowTasks"
-        Task{
+        currentEntityName = "tomorrow_tasks"
+        Task {
             await fetchData()
         }
     }
     
     @objc func thisWeekViewTapped(){
         taskTimeLabel.text = "This Week's Tasks"
-        currentEntityName = "ThisWeekTasks"
-        Task{
+        currentEntityName = "this_week_tasks"
+        Task {
             await fetchData()
         }
     }
     
     @objc func soonViewTapped(){
         taskTimeLabel.text = "Soon's Tasks"
-        currentEntityName = "SoonTasks"
-        Task{
+        currentEntityName = "soon_tasks"
+        Task {
             await fetchData()
-        }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toRouterVC", let destinationVC = segue.destination as? RouterViewController {
-            //destinationVC.passedDateText = taskTimeLabel.text
-        }
-    }
-    
-    @objc func handleTap() {
-        if floatingButtonManager?.additionalButtonsVisible == true {
-            floatingButtonManager?.hideAdditionalButtons()
-            floatingButtonManager?.removeBlurEffect()
         }
     }
     
@@ -108,8 +103,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         do {
             let response = try await client.from("tasks").select().execute()
             
-            // response.data'yı JSONDecoder ile doğrudan ayrıştırıyoruz
             let decoder = JSONDecoder()
+            
+            // Custom Date Formatter
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd" // Tarih formatını veritabanınıza göre ayarlayın
+            decoder.dateDecodingStrategy = .formatted(dateFormatter)
+            
             let decodedData = try decoder.decode([Tasks].self, from: response.data)
             self.data = decodedData
             
@@ -120,7 +120,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             print("Error fetching data: \(error)")
         }
     }
-    
     
     // MARK: - UITableViewDataSource Methods
     
@@ -144,8 +143,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let task = data[indexPath.row]
+        taskTitle = task.title
         //let isChecked = task.value(forKeyPath: "isChecked") as? Bool ?? false
+        print(data[indexPath.row])
+        
+        performSegue(withIdentifier: "toShowTaskVC", sender: nil)
     }
     
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toShowTaskVC" {
+            if let destinationVC = segue.destination as? ShowTaskViewController {
+                destinationVC.receivedTaskName = taskTitle
+            }
+        }
+    }
 }

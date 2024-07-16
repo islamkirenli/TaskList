@@ -8,6 +8,8 @@ class SubTaskViewManager {
     let toolbar: UIToolbar
     weak var viewController: NewTaskViewController?
 
+    var latestTextField: UITextField? // En son oluşturulan textfield referansı
+
     init(stackView: UIStackView, scrollView: UIScrollView, toolbar: UIToolbar, viewController: NewTaskViewController) {
         self.stackView = stackView
         self.scrollView = scrollView
@@ -29,7 +31,7 @@ class SubTaskViewManager {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.inputAccessoryView = toolbar
         textField.delegate = viewController
-        textField.font = UIFont.systemFont(ofSize: 15) // Font büyüklüğünü burada ayarlıyoruz
+        textField.font = UIFont.systemFont(ofSize: 15)
         addBottomLine(to: textField)
 
         let iconImageView = UIImageView(image: UIImage(systemName: "arrow.turn.down.right"))
@@ -69,6 +71,13 @@ class SubTaskViewManager {
             let bottomOffset = CGPoint(x: 0, y: scrollView.contentSize.height - scrollView.bounds.height + scrollView.contentInset.bottom)
             scrollView.setContentOffset(bottomOffset, animated: true)
         }
+
+        // Textfield'ı viewController'daki textFields dizisine ekleyin
+        viewController?.textFields.append(textField)
+
+        // En son oluşturulan textfield referansını sakla ve odağı geç
+        latestTextField = textField
+        textField.becomeFirstResponder()
     }
 
     func addBottomLine(to textField: UITextField) {
@@ -85,17 +94,34 @@ class SubTaskViewManager {
         viewToRemove.removeFromSuperview()
         viewCount -= 1
 
-        if viewToRemove.subviews.contains(where: { $0.isFirstResponder }) {
-            if let lastView = stackView.arrangedSubviews.last,
-               let textField = lastView.subviews.first(where: { $0 is UITextField }) as? UITextField {
-                textField.becomeFirstResponder()
-            } else {
-                viewController?.textField.becomeFirstResponder()
-            }
+        // Silinen view'daki textfield'ı viewController'daki textFields dizisinden çıkarın
+        if let textField = viewToRemove.subviews.first(where: { $0 is UITextField }) as? UITextField,
+           let index = viewController?.textFields.firstIndex(of: textField) {
+            viewController?.textFields.remove(at: index)
+        }
+
+        // Silme işleminden sonra en son oluşturulan textfield'a odağı geç
+        if let lastView = stackView.arrangedSubviews.last,
+           let textField = lastView.subviews.first(where: { $0 is UITextField }) as? UITextField {
+            textField.becomeFirstResponder()
+            latestTextField = textField
+        } else {
+            viewController?.textField.becomeFirstResponder()
+            latestTextField = viewController?.textField
+        }
+
+        // Eğer hiç subtask kalmadıysa subtask butonunun ikonunu boş olarak değiştir
+        if viewController?.textFields.isEmpty ?? true {
+            viewController?.subtaskButton?.setImage(UIImage(systemName: "plus.square.on.square"), for: .normal)
         }
 
         UIView.animate(withDuration: 0.3) {
             self.stackView.layoutIfNeeded()
         }
     }
+
+    func collectSubtaskTexts() -> [String] {
+        return viewController?.textFields.compactMap { $0.text?.isEmpty == false ? $0.text : nil } ?? []
+    }
 }
+

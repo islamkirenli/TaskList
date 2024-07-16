@@ -1,5 +1,5 @@
 //
-//  RecurringEventViewController.swift
+//  HabitViewController.swift
 //  TaskList
 //
 //  Created by islam kirenli on 10.07.2024.
@@ -7,12 +7,11 @@
 
 import UIKit
 
-class RecurringEventViewController: UIViewController {
+class HabitViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
     }
     
 

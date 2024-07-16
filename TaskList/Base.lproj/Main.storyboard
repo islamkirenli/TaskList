@@ -243,6 +243,7 @@
                         <outlet property="todayView" destination="9XV-N5-yPD" id="tTx-pG-wXp"/>
                         <outlet property="tomorrowView" destination="5z8-qG-XFp" id="L7i-5T-hj8"/>
                         <segue destination="Z5b-B6-aF0" kind="show" identifier="toRouterVC" id="Hdi-Kv-TIJ"/>
+                        <segue destination="DQo-qj-Fwk" kind="presentation" identifier="toShowTaskVC" modalPresentationStyle="pageSheet" id="6e9-4p-wfp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mSd-R2-yF5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -274,19 +275,19 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bmj-nq-Kjb" userLabel="newTaskContainerView">
                                 <rect key="frame" x="0.0" y="142" width="393" height="676"/>
                                 <connections>
-                                    <segue destination="qxj-lC-0UJ" kind="embed" identifier="toRecurringEventVC" id="X9y-5R-Oaa"/>
+                                    <segue destination="qxj-lC-0UJ" kind="embed" identifier="toNewTaskVC" id="X9y-5R-Oaa"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1gr-0f-79u" userLabel="recurringEventContainerView">
                                 <rect key="frame" x="0.0" y="142" width="393" height="676"/>
                                 <connections>
-                                    <segue destination="miO-Wr-lB5" kind="embed" identifier="toHabitVC" id="OMo-xw-FfP"/>
+                                    <segue destination="miO-Wr-lB5" kind="embed" identifier="toRecurringEventVC" id="OMo-xw-FfP"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G63-Oc-aMq" userLabel="habitContainerView">
                                 <rect key="frame" x="0.0" y="142" width="393" height="676"/>
                                 <connections>
-                                    <segue destination="K17-bD-BGK" kind="embed" identifier="toNewTaskVC" id="XTA-Nb-im1"/>
+                                    <segue destination="K17-bD-BGK" kind="embed" identifier="toHabitVC" id="XTA-Nb-im1"/>
                                 </connections>
                             </containerView>
                         </subviews>
@@ -346,33 +347,25 @@
             </objects>
             <point key="canvasLocation" x="1171.7557251908397" y="124.64788732394366"/>
         </scene>
-        <!--View Controller-->
+        <!--Recurring Event View Controller-->
         <scene sceneID="u9j-yA-cgl">
             <objects>
-                <viewController id="miO-Wr-lB5" sceneMemberID="viewController">
+                <viewController id="miO-Wr-lB5" customClass="RecurringEventViewController" customModule="TaskList" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ocq-vs-7TN">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="second" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2iR-FL-d5f">
-                                <rect key="frame" x="175" y="328" width="56" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ePf-Eu-M6o"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="goe-mA-SEX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4302" y="62"/>
+            <point key="canvasLocation" x="4589" y="261"/>
         </scene>
-        <!--View Controller-->
+        <!--Habit View Controller-->
         <scene sceneID="xKS-Ue-tRX">
             <objects>
-                <viewController id="K17-bD-BGK" sceneMemberID="viewController">
+                <viewController id="K17-bD-BGK" customClass="HabitViewController" customModule="TaskList" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Tj8-BR-zrp">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -385,12 +378,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Sv0-oM-Vf3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oxc-3v-a2F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4302" y="658"/>
+            <point key="canvasLocation" x="4590" y="863"/>
         </scene>
         <!--New Task View Controller-->
         <scene sceneID="9tc-9p-7Lk">
@@ -400,29 +394,72 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="676"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="first" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhY-BY-qQb">
-                                <rect key="frame" x="175" y="328" width="30" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vev-HW-dN6">
-                                <rect key="frame" x="49" y="100" width="282" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="New Task" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vev-HW-dN6">
+                                <rect key="frame" x="16" y="97" width="361" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b7P-oD-ITg" userLabel="SubTaskContentView">
+                                <rect key="frame" x="16" y="139" width="361" height="128"/>
+                                <color key="backgroundColor" systemColor="systemBrownColor"/>
+                            </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="BDF-0n-Zi3"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="BDF-0n-Zi3" firstAttribute="trailing" secondItem="Vev-HW-dN6" secondAttribute="trailing" constant="16" id="6RZ-nP-dLx"/>
+                            <constraint firstItem="BDF-0n-Zi3" firstAttribute="trailing" secondItem="b7P-oD-ITg" secondAttribute="trailing" constant="16" id="7v0-z1-kbj"/>
+                            <constraint firstItem="b7P-oD-ITg" firstAttribute="bottom" secondItem="BDF-0n-Zi3" secondAttribute="bottom" constant="-375" id="BbV-9P-h9L"/>
+                            <constraint firstItem="b7P-oD-ITg" firstAttribute="top" secondItem="Vev-HW-dN6" secondAttribute="bottom" constant="8" id="Gwq-wu-P2L"/>
+                            <constraint firstItem="Vev-HW-dN6" firstAttribute="top" secondItem="BDF-0n-Zi3" secondAttribute="top" constant="38" id="YuI-Ag-jVP"/>
+                            <constraint firstItem="b7P-oD-ITg" firstAttribute="leading" secondItem="Vev-HW-dN6" secondAttribute="leading" id="iFo-9W-pRL"/>
+                            <constraint firstItem="Vev-HW-dN6" firstAttribute="leading" secondItem="BDF-0n-Zi3" secondAttribute="leading" constant="16" id="o8u-Ys-jt2"/>
+                            <constraint firstItem="b7P-oD-ITg" firstAttribute="trailing" secondItem="Vev-HW-dN6" secondAttribute="trailing" id="pLo-Bg-Dk0"/>
+                            <constraint firstItem="b7P-oD-ITg" firstAttribute="leading" secondItem="BDF-0n-Zi3" secondAttribute="leading" constant="16" id="q9d-4V-7Ev"/>
+                        </constraints>
                     </view>
                     <connections>
+                        <outlet property="subTaskContentView" destination="b7P-oD-ITg" id="iwy-ik-znu"/>
                         <outlet property="textField" destination="Vev-HW-dN6" id="LKA-a2-qYj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RwK-Hj-SXS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4301.5267175572517" y="-542.25352112676057"/>
+            <point key="canvasLocation" x="4589" y="-450"/>
+        </scene>
+        <!--Show Task View Controller-->
+        <scene sceneID="1FM-2m-tOi">
+            <objects>
+                <viewController id="DQo-qj-Fwk" customClass="ShowTaskViewController" customModule="TaskList" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="96r-2f-qSe">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8LJ-ci-l5f">
+                                <rect key="frame" x="78" y="390" width="237" height="62"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="McQ-hs-RW6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="McQ-hs-RW6" firstAttribute="trailing" secondItem="8LJ-ci-l5f" secondAttribute="trailing" constant="78" id="A4z-Z9-8A8"/>
+                            <constraint firstItem="8LJ-ci-l5f" firstAttribute="leading" secondItem="McQ-hs-RW6" secondAttribute="leading" constant="78" id="A6G-xl-yNo"/>
+                            <constraint firstItem="8LJ-ci-l5f" firstAttribute="centerX" secondItem="96r-2f-qSe" secondAttribute="centerX" id="Kpp-wR-YV8"/>
+                            <constraint firstItem="8LJ-ci-l5f" firstAttribute="centerY" secondItem="96r-2f-qSe" secondAttribute="centerY" id="QYT-Hj-qrh"/>
+                            <constraint firstItem="8LJ-ci-l5f" firstAttribute="top" secondItem="McQ-hs-RW6" secondAttribute="top" constant="390" id="Rge-WT-J9V"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="u9s-q2-hBi"/>
+                    <connections>
+                        <outlet property="taskLabel" destination="8LJ-ci-l5f" id="5I7-a5-FgN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="h14-zZ-po2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3333.5877862595416" y="901.4084507042254"/>
         </scene>
     </scenes>
     <resources>
@@ -432,6 +469,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBrownColor">
+            <color red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemMintColor">
             <color red="0.0" green="0.78039215689999997" blue="0.74509803919999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
